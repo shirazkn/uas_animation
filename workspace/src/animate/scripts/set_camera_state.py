@@ -13,12 +13,17 @@ import _helpers as h
 import scipy.spatial.transform as t
 import numpy as np
 
-OFFSET = 2
-PITCH = 30  # up-down tilt (Degrees) of camera wrt drone trajectory
-SWIVEL = 0
+OFFSET = 1.5
+PITCH = 45.0  # up-down tilt (Degrees) of camera wrt drone trajectory
+SWIVEL = 0.0
 PITCH = np.deg2rad(PITCH)
 SWIVEL = np.deg2rad(SWIVEL)
 
+
+def xyz_from_ps(pitch, swivel):
+    return [-1*OFFSET*np.cos(-1*pitch)*np.cos(-1*swivel),
+            -1*OFFSET*np.cos(-1*pitch)*np.sin(-1*swivel),
+            -1*OFFSET*np.sin(-1*pitch)]
 
 def quat_from_ps(pitch, swivel):
     # TODO : Remove roll terms
@@ -29,12 +34,7 @@ def quat_from_ps(pitch, swivel):
     qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(swivel/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(swivel/2)
     return [qx, qy, qz, qw]
 
-def xyz_from_ps(pitch, swivel):
-    return [OFFSET*np.cos(pitch)*np.cos(swivel),
-            OFFSET*np.cos(pitch)*np.sin(swivel),
-            OFFSET*np.sin(pitch)]
-
-def set_xyz(camera_msg, xyz):
+def set_xyz(camera_msg, pitch, swivel):
     (camera_msg.pose.position.x,
      camera_msg.pose.position.y,
      camera_msg.pose.position.z) = xyz_from_ps(pitch, swivel)
@@ -43,7 +43,7 @@ def set_quat(camera_msg, pitch, swivel):
     (camera_msg.pose.orientation.x,
      camera_msg.pose.orientation.y, 
      camera_msg.pose.orientation.z, 
-     camera_msg.pose.orientation.w) = quat_from_ps(-pitch, -swivel) 
+     camera_msg.pose.orientation.w) = quat_from_ps(pitch, swivel) 
 
 def main():
     rospy.init_node('set_camera_pose')
@@ -57,7 +57,7 @@ def main():
     elapsed = 0
     iteration = -1
     end_time = 10
-    rate = rospy.Rate(100)
+    rate = rospy.Rate(10)
     
     # Camera tracking logic
     pitch = PITCH
