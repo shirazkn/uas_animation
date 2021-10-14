@@ -20,9 +20,7 @@ def xyz_from_ps(offset, pitch, swivel):
             -1*offset*np.cos(-1*pitch)*np.sin(swivel),
             -1*offset*np.sin(-1*pitch)]
 
-def quat_from_ps(pitch, swivel):
-    # TODO : Remove roll terms
-    roll = 0.0
+def quat_from_ps(pitch, swivel, roll=0.0):
     qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(swivel/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(swivel/2)
     qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(swivel/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(swivel/2)
     qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(swivel/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(swivel/2)

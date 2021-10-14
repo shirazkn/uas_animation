@@ -1,0 +1,1 @@
+subl src/animate/scripts/set_drone_state.py src/animate/scripts/set_ghost_state.py src/animate/scripts/set_camera_state.py src/animate/scripts/_helpers.py src/animate/scripts/params.py src/animate/scripts/Simulations/TimeSeries.py

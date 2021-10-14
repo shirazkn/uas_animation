@@ -1,0 +1,5 @@
+.catkin_tools
+workspace/build/*
+workspace/logs/*
+workspace/devel/*
+__pycache__

@@ -81,11 +81,23 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: false
+    - Class: rviz/Image
+      Enabled: false
+      Image Topic: /camera_2/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Camera2
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: false
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
     Fixed Frame: map
-    Frame Rate: 30
+    Frame Rate: 20
   Name: root
   Tools:
     - Class: rviz/Interact

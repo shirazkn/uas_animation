@@ -14,11 +14,9 @@ import scipy.spatial.transform as t
 import numpy as np
 from params import *
 
-OFFSET = 1.5  # Dist. from camera to drone (+ve moves camera along x-)
-PITCH = 45.0  # up-down tilt (+ve looks downwards, towards z)
-SWIVEL = 45.0  # Swivel (+ve looks towards y+)
-pitch = np.deg2rad(PITCH)
-swivel = np.deg2rad(SWIVEL)
+OFFSET = 5.0  # Dist. from camera to drone (+ve moves camera along x-)
+PITCH = 50.0  # up-down tilt (+ve looks downwards, towards z)
+SWIVEL = 170.0  # Swivel (+ve looks towards y+)
 # When pitch and swivel are 0, camera is at (-OFFSET, 0, 0) aligned towards x+
 
 
@@ -30,12 +28,16 @@ def main():
     
     camera_msg = h.get_ModelState('camera_1')
     camera_msg.reference_frame = 'drone'
+    pitch = np.deg2rad(PITCH)
+    swivel = np.deg2rad(SWIVEL)
 
     while not sim.is_finished:
-        elapsed = (rospy.get_rostime() - start).to_sec()
         rospy.wait_for_service('/gazebo/set_model_state')
+        elapsed = (rospy.get_rostime() - start).to_sec()
 
         try:
+            swivel = swivel - 0.0007 
+            pitch = pitch - 0.0004
             h.set_xyz(camera_msg, OFFSET, pitch, swivel)
             h.set_quat(camera_msg, pitch, swivel)
             set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
